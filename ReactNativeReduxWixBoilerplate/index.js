@@ -1,4 +1,6 @@
-import { AppRegistry } from 'react-native';
-import App from './App';
+import App from './src/App';
+if(!__DEV__){
+    console.log = () => {};
+}
 
-AppRegistry.registerComponent('ReactNativeReduxWixBoilerplate', () => App);
+const app = new App();
