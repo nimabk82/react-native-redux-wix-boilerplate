@@ -1,5 +1,6 @@
 import {StyleSheet, Text, View} from "react-native";
 import React, {Component} from "react";
+import LinearGradient from 'react-native-linear-gradient';
 
 export default class Test extends Component<{}> {
 
@@ -29,9 +30,11 @@ export default class Test extends Component<{}> {
                 <Text style={styles.welcome}>
                     Welcome to React Native!
                 </Text>
-                <Text style={styles.instructions}>
-                    To get started, edit App.js
-                </Text>
+                <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
+                    <Text style={styles.buttonText}>
+                        Gradient
+                    </Text>
+                </LinearGradient>
                 <Text style={styles.instructions}>
 
                 </Text>
@@ -56,5 +59,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#333333',
         marginBottom: 5,
+    },
+    linearGradient: {
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderRadius: 5
+    },
+    buttonText: {
+        fontSize: 18,
+        fontFamily: 'Gill Sans',
+        textAlign: 'center',
+        margin: 10,
+        color: '#ffffff',
+        backgroundColor: 'transparent',
     },
 });
