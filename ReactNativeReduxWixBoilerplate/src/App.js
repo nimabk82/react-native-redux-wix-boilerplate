@@ -5,19 +5,10 @@ import {Navigation} from "react-native-navigation";
 import * as appActions from "./actions/index";
 import {registerScreens} from "./screens";
 import store from './actions/configureStore';
-registerScreens(store, Provider);
-// import {iconsMap,iconsLoaded} from './src/utils/AppIcons';
-
-const navigatorStyle = {
-    navBarTranslucent: true,
-    drawUnderNavBar: true,
-    navBarTextColor: 'white',
-    navBarButtonColor: 'white',
-    statusBarTextColorScheme: 'light',
-    drawUnderTabBar: true
-};
+import {iconsMap, iconsLoaded} from './utils/AppIcons';
 
 //adb reverse tcp:8081 tcp:8081 4.10.1  ./gradlew assembleRelease       chmod +x gradlew     adb shell input keyevent 82
+registerScreens(store, Provider);
 
 export default class App {
     constructor() {
@@ -29,29 +20,29 @@ export default class App {
         const {root} = store.getState().app;
         // handle a root change
         // if your app doesn't change roots in runtime, you can remove onStoreUpdate() altogether
-        if (this.currentRoot != root) {
+        if (this.currentRoot !== root) {
             this.currentRoot = root;
 
-         //   Platform.OS==='ios' ?  iconsLoaded.then(() => {
+            Platform.OS === 'ios' ? iconsLoaded.then(() => {
                     this.startApp(root);
-          //      }) :
-          //      this.startApp(root);
+                }) :
+                this.startApp(root);
         }
     }
 
     startApp(root) {
         switch (root) {
             case 'login':
-                Platform.OS==='android' ?
+                Platform.OS === 'android' ?
                     Navigation.startSingleScreenApp({
                         screen: {
-                             screen: 'example.Test',
+                            screen: 'example.Test',
                             navigatorStyle: {
-                                navBarHidden : true,
+                                navBarHidden: false,
                                 navBarTranslucent: false,
                                 drawUnderNavBar: false,
                                 navBarTransparent: false,
-                                navBarButtonColor: '#ffffff',
+                                navBarButtonColor: 'black',
                             },
                             passProps: {
                                 dispatch: store.dispatch,
@@ -61,25 +52,26 @@ export default class App {
                             orientation: 'portrait',
                         },
                         passProps: {},
-                        animationType: 'fade'
+                        animationType: 'fade',
+                        overrideBackPress: false,
+                        backButtonHidden: false,
                     }) :
                     Navigation.startSingleScreenApp({
                         screen: {
                             screen: 'example.Test',
-                            //    screen: 'gorgias.story.payDialog',
                             navigatorStyle: {
                                 statusBarHideWithNavBar: false,
                                 statusBarTextColorScheme: 'light',
-                                navBarHidden : true,
+                                navBarHidden: true,
                                 statusBarHidden: false,
                                 navBarBackgroundColor: 'black',
                             },
-                            // navigatorButtons: {
-                            //     leftButtons :[{
-                            //         icon:iconsMap['ios-arrow-back'],
-                            //     }
-                            //     ]
-                            // },
+                            navigatorButtons: {
+                                leftButtons: [{
+                                    icon: iconsMap['ios-arrow-back'],
+                                }
+                                ]
+                            },
                         },
                         appStyle: {
                             orientation: 'portrait',
