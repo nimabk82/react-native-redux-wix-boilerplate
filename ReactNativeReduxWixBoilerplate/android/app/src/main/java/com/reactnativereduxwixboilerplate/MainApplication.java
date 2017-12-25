@@ -2,7 +2,12 @@ package com.reactnativereduxwixboilerplate;
 
 import android.app.Application;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.react.ReactApplication;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import io.invertase.firebase.RNFirebasePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
@@ -15,6 +20,18 @@ import java.util.List;
  import com.reactnativenavigation.NavigationApplication;
 
  public class MainApplication extends NavigationApplication {
+     private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
+
+     protected static CallbackManager getCallbackManager() {
+         return mCallbackManager;
+     }
+
+     @Override
+     public void onCreate() {
+         super.onCreate();
+         FacebookSdk.sdkInitialize(getApplicationContext());
+         AppEventsLogger.activateApp(this);
+     }
 
      @Override
      public boolean isDebug() {
@@ -32,7 +49,9 @@ import java.util.List;
          // No need to add RnnPackage and MainReactPackage
          return Arrays.<ReactPackage>asList(
              new VectorIconsPackage(),
-             new LinearGradientPackage()
+             new LinearGradientPackage(),
+             new RNFirebasePackage(),
+             new FBSDKPackage(mCallbackManager)
          );
      }
 

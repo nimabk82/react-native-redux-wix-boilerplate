@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "616402787229",
+    "firebase_url": "https://reactnativereduxwixboilerplate.firebaseio.com",
+    "project_id": "reactnativereduxwixboilerplate",
+    "storage_bucket": "reactnativereduxwixboilerplate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616402787229:android:d7560cb1870fedc6",
+        "android_client_info": {
+          "package_name": "com.reactnativereduxwixboilerplate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616402787229-k5jbn0sbu1kn86d9ombt6rrgcua21vcf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTfPQtVcKIeurcXyxePbwiXkyWTHtmOrI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

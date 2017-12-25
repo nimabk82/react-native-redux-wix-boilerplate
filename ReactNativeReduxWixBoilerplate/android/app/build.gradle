@@ -137,6 +137,13 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fbsdk')
+    compile(project(':react-native-firebase')) {
+        transitive = false
+    }
+    compile "com.google.android.gms:play-services-base:11.2.0"
+    compile "com.google.firebase:firebase-core:11.2.0"
+    compile "com.google.firebase:firebase-auth:11.2.0"
     compile project(':react-native-linear-gradient')
     compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])
@@ -151,3 +158,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+apply plugin: 'com.google.gms.google-services'

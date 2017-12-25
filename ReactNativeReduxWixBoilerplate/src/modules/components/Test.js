@@ -1,6 +1,7 @@
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, View,Button} from "react-native";
 import React, {Component} from "react";
 import LinearGradient from 'react-native-linear-gradient';
+import { handleFbLogin,facebookLogin } from '../../firebase/auth';
 
 export default class Test extends Component<{}> {
 
@@ -35,6 +36,11 @@ export default class Test extends Component<{}> {
                         Gradient
                     </Text>
                 </LinearGradient>
+                <Button
+                    onPress={facebookLogin}
+                    title="Sign in with facebook"
+                    color="#3c50e8"
+                />
                 <Text style={styles.instructions}>
 
                 </Text>
