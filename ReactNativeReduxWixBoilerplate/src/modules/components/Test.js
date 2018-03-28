@@ -1,9 +1,22 @@
-import {StyleSheet, Text, View,Button} from "react-native";
+import {StyleSheet, Text, View, Button, TouchableOpacity, Image} from "react-native";
 import React, {Component} from "react";
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as authActions from '../../actions/auth';
 import LinearGradient from 'react-native-linear-gradient';
-import { handleFbLogin,facebookLogin } from '../../firebase/auth';
+// import { AccessToken, LoginManager } from 'react-native-fbsdk';
+import firebase from 'react-native-firebase';
 
-export default class Test extends Component<{}> {
+
+const FBSDK = require('react-native-fbsdk');
+const {
+    LoginButton,
+    LoginManager,
+    AccessToken
+} = FBSDK;
+class Test extends Component<{}> {
+
+    state = {photo: '', name: '', email: ''};
 
     static navigatorButtons = {
         rightButtons: [
@@ -25,29 +38,91 @@ export default class Test extends Component<{}> {
             }
         ]
     };
+
+    facebookLogin = () => {
+        return LoginManager
+            .logInWithReadPermissions(['public_profile', 'email'])
+            .then((result) => {
+                if (!result.isCancelled) {
+                    console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`)
+                    // get the access token
+                    return AccessToken.getCurrentAccessToken()
+                }
+            })
+            .then(data => {
+                if (data) {
+                    // create a new firebase credential with the token
+                    const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken)
+                    // login with credential
+                    return firebase.auth().signInWithCredential(credential)
+                }
+            })
+            .then((currentUser) => {
+                if (currentUser) {
+                    console.info(currentUser)
+                }
+            })
+            .catch((error) => {
+                console.log(`Login fail with error: ${error}`)
+            })
+    };
+
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>
-                    Welcome to React Native!
-                </Text>
-                <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']} style={styles.linearGradient}>
-                    <Text style={styles.buttonText}>
-                        Gradient
+                {this.state.photo != '' &&
+                <Image source={{uri:this.state.photo}} style={{width:60,height:60,borderRadius:40}}/>}
+                <LoginButton
+                    publishPermissions={["publish_actions,email"]}
+                    onLoginFinished={(error, result) => {
+                                            console.log(result);
+              if (error) {
+               console.log(error);
+              } else if (result.isCancelled) {
+                console.log('canceled');
+              } else {
+                AccessToken.getCurrentAccessToken().then(
+                  (data) => {
+                    console.log(data);
+                    firebase.auth()
+                    .signInWithCredential(firebase.auth.FacebookAuthProvider.credential(data.accessToken.toString()))
+                    .then(result =>this.setState({photo:result._user.photoURL,name:result._user.displayName,email:result._user.email}))
+                  }
+                )
+              }
+            }
+          }
+                    onLogoutFinished={() => alert("logout.")}/>
+                <TouchableOpacity>
+                    <Text style={styles.instructions}>
+                        {this.state.name} ---- {this.state.email}
                     </Text>
-                </LinearGradient>
-                <Button
-                    onPress={facebookLogin}
-                    title="Sign in with facebook"
-                    color="#3c50e8"
-                />
-                <Text style={styles.instructions}>
+                </TouchableOpacity>
 
-                </Text>
+                <TouchableOpacity onPress={this.props.authActions.loginUser}>
+                    <Text style={styles.instructions}>
+                        Login
+                    </Text>
+                </TouchableOpacity>
             </View>
         );
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    console.log(state);
+    return {
+        user : state.auth
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        authActions: bindActionCreators(authActions, dispatch)
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Test);
 
 const styles = StyleSheet.create({
     container: {

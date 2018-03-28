@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">ReactNativeReduxWixBoilerplate</string>
     <string name="facebook_app_id">1363473433798505</string>
-    <string name="fb_login_protocol_scheme">1363473433798505</string>
+    <string name="fb_login_protocol_scheme">fb1363473433798505</string>
 </resources>
